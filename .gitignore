@@ -1,0 +1,17 @@
+obj
+bin
+gen
+_ReSharper.*
+*.csproj.user
+*.resharper.user
+*.resharper
+*.suo
+*.cache
+*~
+*.swp
+/Build
+/build
+NDependOut
+*.Publish.xml
+build
+raw/audio/**/*
