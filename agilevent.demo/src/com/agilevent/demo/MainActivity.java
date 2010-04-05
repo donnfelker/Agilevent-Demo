@@ -1,22 +1,35 @@
 package com.agilevent.demo;
 
+import java.util.List;
+
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.Twitter.Status;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.util.Linkify;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,12 +37,14 @@ public class MainActivity extends Activity 	implements TabHost.OnTabChangeListen
     
 	public static final int DIALOG_LOADING = 0; 
 	public static final int DIALOG_LOADING_FINISHED = 1;
-	public static final int DIALOG_MENU_ABOUT = 2; 
-	
+	public static final int DIALOG_MENU_ABOUT = 2;
+		
 	public static final int MENU_ABOUT = 0; 
 	
 	
 	ProgressDialog mDialog;
+	
+	List<Status> mResults;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -121,13 +136,49 @@ public class MainActivity extends Activity 	implements TabHost.OnTabChangeListen
 		int id = getResources().getIdentifier(tabId, "id", getPackageName()); 
 		
 		switch(id) {
+			case R.id.tab2: 
+				loadTweets(); 
+				break; 
 			case R.id.tab3: 
 				loadWebPage();
 				break; 
 		}
 	}
 
- 
+	
+	private void loadTweets() {
+		
+		Twitter client = new Twitter();
+		mResults = client.search("#tccc8");
+		
+		ListView tweetList = (ListView)findViewById(R.id.tab2);
+		tweetList.setAdapter(new TweetAdapter()); 
+		
+	}
+
+	class TweetAdapter extends ArrayAdapter<Status> {
+
+		public TweetAdapter() {
+			super(MainActivity.this, android.R.layout.simple_list_item_1, mResults); 
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = getLayoutInflater(); 
+			View row = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+			TextView tv = (TextView)row.findViewById(android.R.id.text1);
+			tv.setAutoLinkMask(Linkify.ALL); 
+			
+			Status status = mResults.get(position); 
+			String displayText = status.getUser().screenName + ": " + status.getText(); 
+			
+			tv.setText(displayText); 
+			tv.setTextSize(13);
+			return row; 
+		}
+		
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
@@ -137,8 +188,8 @@ public class MainActivity extends Activity 	implements TabHost.OnTabChangeListen
 				return new AlertDialog.Builder(MainActivity.this)
 							.setMessage(R.string.app_about)
 							.setCancelable(true)
-							.create(); 
-							
+							.create();
+			
 		}
 		return super.onCreateDialog(id);
 	}	 

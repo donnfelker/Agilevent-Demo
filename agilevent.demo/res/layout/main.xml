@@ -59,11 +59,10 @@
 		     	android:layout_below="@+id/message"
 		     	android:text="Send" />
 		     	
-	     </RelativeLayout>	     
-	     <Button android:id="@+id/tab2"
+	     </RelativeLayout>
+	     <ListView android:id="@+id/tab2"
 	       android:layout_width="fill_parent"
 	       android:layout_height="fill_parent"
-	       android:text="A semi-random button"
 	     />
 	     <LinearLayout android:id="@+id/tab3"
 	     	android:layout_width="fill_parent"
