@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">Agilevent Demo</string>
+	<string name="app_about">This application was built live, during Twin Cities Code Camp. \n\n If you have any comments or suggestions please let me know via the contact tab!</string>
+</resources>
